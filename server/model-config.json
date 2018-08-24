@@ -38,5 +38,9 @@
   "dishes": {
     "dataSource": "db",
     "public": true
+  },
+  "availability": {
+    "dataSource": "db",
+    "public": true
   }
 }
