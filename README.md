@@ -40,3 +40,11 @@ Need:
 To do:
 
 * verify email address
+
+NEXT:
+
+- get access token stored in the app (top level state will do)
+- get user details in there too
+- post for each access token
+- get availabilities
+- view all availabilites
