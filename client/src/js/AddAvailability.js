@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Grid, Col, Button } from 'react-bootstrap';
 import request from 'superagent';
 import '../styles/date.css';
+import { connect } from 'react-redux';
 // need a calendar as per:
 
 //https://doodle.com/poll/i78zw9vimvgyiw5c#calendar
@@ -49,7 +50,7 @@ class AddAvailability extends Component {
 
   formatAvailability() {
     return {
-      "userId": "test",
+      "userId": "acwaefag1231w",
       "availability": "2019-09-07T11:23:54.093Z"
     }
   }
@@ -77,7 +78,7 @@ class AddAvailability extends Component {
 
     // need to post for each availibilty 
     request
-      .post(`http://localhost:3000/api/availabilities?access_token=${this.props.route.accessToken}`)
+      .post(`http://localhost:3000/api/availabilities?access_token=${this.props.user.token}`)
       .send(this.formatAvailability())
       .set('Accept', 'application/json')
       .then((res) => {
@@ -128,4 +129,11 @@ class AddAvailability extends Component {
   
 }
 
-export default AddAvailability;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = {
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddAvailability);

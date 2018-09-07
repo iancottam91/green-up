@@ -43,8 +43,7 @@ To do:
 
 NEXT:
 
-- get access token stored in the app (top level state will do)
-- get user details in there too
+- get user details in the user state
 - post for each access token
 - get availabilities
 - view all availabilites
