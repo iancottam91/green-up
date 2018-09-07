@@ -3,6 +3,8 @@ import { Grid, Col } from 'react-bootstrap';
 import { FormGroup, ControlLabel, FormControl, Button, Alert } from 'react-bootstrap';
 import request from 'superagent';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import { addUserToken } from './store/action/user';
 
 class Login extends Component {
 
@@ -12,6 +14,7 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.loginUser = this.loginUser.bind(this);
+    console.log(props);
 
     this.state = {
       formValues: {},
@@ -53,9 +56,8 @@ class Login extends Component {
 
   handleSuccessfulRegister(res) {
 
-    // set access token 
-    this.props.route.setAccessToken(res.body.id);
     // set user name
+    this.props.addUserToken(res.body.id);
 
     this.setState({
       userLoginSuccess: true,
@@ -116,4 +118,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = {
+  addUserToken: token => dispatch => dispatch(addUserToken(token)),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
