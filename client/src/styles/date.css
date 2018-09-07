@@ -1,0 +1,34 @@
+.date-container {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+}
+
+.date-items {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.date-item {
+  width: 20%;
+}
+
+.date-header {
+  padding: 10px;
+  text-align: center;
+}
+
+.date-header__date {
+  font-weight: bold;
+  text-align: center;
+}
+.date-header__day {
+  display: block;
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: inherit;
+}
+
+.date-availability {
+  text-align: center;
+}

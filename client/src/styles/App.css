@@ -1,0 +1,27 @@
+.App {
+  /* text-align: center; */
+}
+
+html, body {
+  height: 100%;
+  background: #FAF7F5;
+  font-size: 20px;
+}
+
+header {
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.logo {
+  display: flex;
+  color: darkseagreen;
+  font-size: 40px;
+}
+
+.btn-container {
+  padding: 20px 0;
+}
