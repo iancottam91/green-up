@@ -16,8 +16,8 @@ const days = ["Sun", "Mon","Tue","Wed","Thu","Fri","Sat"];
 
 class AddAvailability extends Component {
 
-  constructor() {
-    super();
+  constructor(props, context) {
+    super(props, context);
     this.state = {
       availability: ["Fri Sep 07 2018 23:59:59 GMT+0100 (British Summer Time)"],
       dates: []
@@ -49,7 +49,8 @@ class AddAvailability extends Component {
 
   formatAvailability() {
     return {
-
+      "userId": "test",
+      "availability": "2019-09-07T11:23:54.093Z"
     }
   }
 
@@ -73,8 +74,10 @@ class AddAvailability extends Component {
   submitAvailability(e) {
     e.preventDefault();
     console.log('set my greens');
+
+    // need to post for each availibilty 
     request
-      .post('http://localhost:3000/api/availabilities')
+      .post(`http://localhost:3000/api/availabilities?access_token=${this.props.route.accessToken}`)
       .send(this.formatAvailability())
       .set('Accept', 'application/json')
       .then((res) => {
@@ -82,6 +85,14 @@ class AddAvailability extends Component {
       }).catch((err) => {
         this.handleUnsuccessfulSet(err);
       });
+  }
+
+  handleSuccessfulSet(res) {
+    console.log(res);
+  }
+
+  handleUnsuccessfulSet(error) {
+    console.log(error);
   }
 
   render () {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Col } from 'react-bootstrap';
 import { FormGroup, ControlLabel, FormControl, Button, Alert } from 'react-bootstrap';
 import request from 'superagent';
+import { Link } from 'react-router';
 
 class Login extends Component {
 
@@ -51,6 +52,11 @@ class Login extends Component {
   }
 
   handleSuccessfulRegister(res) {
+
+    // set access token 
+    this.props.route.setAccessToken(res.body.id);
+    // set user name
+
     this.setState({
       userLoginSuccess: true,
       userLoginFail: false
@@ -69,7 +75,11 @@ class Login extends Component {
     return (
       <Grid>
         <Col xs={6} xsOffset={3}>
-          {this.state.userLoginSuccess ? <Alert bsStyle="success">User logged in successfully</Alert> : ''}
+          {this.state.userLoginSuccess ? 
+            <Alert bsStyle="success">User logged in successfully
+              <Link to="/set-my-greens">Set my greens</Link>
+            </Alert>
+          : ''}
           {this.state.userLoginFail ? <Alert bsStyle="danger">Unable login user</Alert> : ''}
           <form onSubmit={this.handleSubmit.bind(this)}>
             <FormGroup
