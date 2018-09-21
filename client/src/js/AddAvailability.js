@@ -4,7 +4,7 @@ import { Grid, Col, Button } from 'react-bootstrap';
 import '../styles/date.css';
 import { connect } from 'react-redux';
 import { get, getAvailabilityFilter } from './utils/api';
-import { post } from './utils/api';
+import { post, deleteItem } from './utils/api';
 // need a calendar as per:
 
 //https://doodle.com/poll/i78zw9vimvgyiw5c#calendar
@@ -132,18 +132,25 @@ export class AddAvailability extends Component {
   submitAvailability(e) {
     e.preventDefault();
 
-    console.log(this.formatAvailabilityForPost());
-    // delete availabilities 
-    // const idsToDelete = extractAvailabilityIdsForDelete(initialAvailability, setAvailability);
-
-    // add availabilities
+    // add new availabilities
     post(`/availabilities?access_token=${token}`, this.formatAvailabilityForPost())
       .then((res) => {
         this.handleSuccessfulSet(res);
       }).catch((err) => {
         this.handleUnsuccessfulSet(err);
       });
-
+    
+    // delete availabilities
+    // just delete all original entries
+    const idsToDelete = this.extractAvailabilityIdsForDelete(this.state.initialAvailability , []);
+    for(var i=0; i<idsToDelete.length; i++) {
+      deleteItem('/availabilities', token, idsToDelete[i])
+      .then((res) => {
+        // console.log(res);
+      }).catch((err) => {
+        console.error(err);
+      });
+    }
 
   }
 

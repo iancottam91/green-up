@@ -28,6 +28,19 @@ export const get = (url, token, filter) => {
 }
 
 /*
+* {string} url - the api url
+* {string} token - the access token
+*
+* returns {promise}
+*/
+export const deleteItem = (url, token, id) => {
+  console.log('delete');
+  return request
+  .delete(`http://localhost:3000/api${url}/${id}?access_token=${token}`)
+  .set('Accept', 'application/json');
+}
+
+/*
 * {string} userId - user id
 * {date} startDate - Round-trip date format
 * {date} endDate - Round-trip date format
