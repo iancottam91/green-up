@@ -10,6 +10,12 @@ const user = (state = defaultState, action) => {
         ...state,
         token: action.token
       };
+    case 'USER_ADD_DETAILS':
+      const { realm, username, email, emailVerified, id } = action.userDetails;
+      return {
+        ...state,
+        realm, username, email, emailVerified, id
+      };
     default:
       return state;
   }

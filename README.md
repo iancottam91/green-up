@@ -43,7 +43,8 @@ To do:
 
 NEXT:
 
-- get user details in the user state
-- post for each access token
-- get availabilities
-- view all availabilites
+- put user details in the user state i.e email address and user name (login button or username in top right)
+- post for each availability option
+- get availabilities my current week to set initial state in set my greens
+- view all availabilites of everyone else
+- make into an app??

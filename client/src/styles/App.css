@@ -25,3 +25,11 @@ header {
 .btn-container {
   padding: 20px 0;
 }
+
+/* Alerts */
+.alert a {
+  text-decoration: underline;
+}
+.alert-success a {
+  color: #3c763d;
+}

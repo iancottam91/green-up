@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Grid, Col } from 'react-bootstrap';
 import { FormGroup, ControlLabel, FormControl, Button, Alert } from 'react-bootstrap';
-import request from 'superagent';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { addUserToken } from './store/action/user';
+import { addUserToken, addUserDetails } from './store/action/user';
+import { post, get } from './utils/api';
 
 class Login extends Component {
 
@@ -42,14 +42,25 @@ class Login extends Component {
     this.loginUser(this.state.formValues);
   }
 
-  loginUser(userDetails) {
-    request
-      .post('http://localhost:3000/api/Users/login')
-      .send(userDetails)
-      .set('Accept', 'application/json')
+  /*
+  * {string} userId - 20 character id from login
+  */
+  getAndStoreUserDetails(userId) {
+    get('/Users/' + userId, this.props.user.token).then((res) => {
+      console.log('put details in store');
+      this.props.addUserDetails(res.body);
+    }).catch((err) => {
+      console.error(err);
+      console.error('there was an error');
+    })
+  }
+
+  loginUser(userCredentials) {
+    post('/Users/login', userCredentials)
       .then((res) => {
         this.handleSuccessfulRegister(res);
       }).catch((err) => {
+        console.error(err);
         this.handleUnsuccessfulRegister(err);
       });
   }
@@ -59,6 +70,10 @@ class Login extends Component {
     // set user name
     this.props.addUserToken(res.body.id);
 
+    // get user details and add to the store
+    this.getAndStoreUserDetails('5b8006fc6262ab7f0d8e3b51')
+
+    // update state based on login attempt
     this.setState({
       userLoginSuccess: true,
       userLoginFail: false
@@ -78,8 +93,8 @@ class Login extends Component {
       <Grid>
         <Col xs={6} xsOffset={3}>
           {this.state.userLoginSuccess ? 
-            <Alert bsStyle="success">User logged in successfully
-              <Link to="/set-my-greens">Set my greens</Link>
+            <Alert bsStyle="success">User logged in successfully, click here to&nbsp;
+              <Link to="/set-my-greens">set my greens</Link>
             </Alert>
           : ''}
           {this.state.userLoginFail ? <Alert bsStyle="danger">Unable login user</Alert> : ''}
@@ -124,6 +139,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   addUserToken: token => dispatch => dispatch(addUserToken(token)),
+  addUserDetails: userDetails => dispatch => dispatch(addUserDetails(userDetails))
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
