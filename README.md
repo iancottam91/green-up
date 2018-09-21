@@ -46,4 +46,6 @@ NEXT:
 
 - persist user details in local storage
 - view all availabilites of everyone else
+- get redirected to the login page if you're not logged in
+- link to register page on login page /combine them like FB
 - make into an app??
