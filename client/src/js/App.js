@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Header from './Header';
+import AppStructure from './AppStructure';
 import Register from './Register';
 import Login from './Login';
 import './../styles/App.css';
@@ -13,26 +13,27 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Header></Header>
-        <Provider store={store}>
+      <Provider store={store}>
+        <div className="App">
           <Router history={browserHistory}>
-            <Route path="/register" component={Register}></Route>
-            <Route 
-              path="/login"
-              component={Login}
-            ></Route>
-            <Route 
-              path="/view-greens"
-              component={ViewAvailability}
-            ></Route>
-            <Route
-              path="/set-my-greens"
-              component={AddAvailability}
-            ></Route>
+            <Route path="/" component={AppStructure}>
+              <Route path="/register" component={Register}></Route>
+              <Route 
+                path="/login"
+                component={Login}
+              ></Route>
+              <Route 
+                path="/view-greens"
+                component={ViewAvailability}
+              ></Route>
+              <Route
+                path="/set-my-greens"
+                component={AddAvailability}
+              ></Route>
+            </Route>
           </Router>
-        </Provider>
-      </div>
+        </div>
+      </Provider>
     );
   }
 }

@@ -1,6 +1,6 @@
 export const defaultState = {
   token: '',
-  username: 'username'
+  username: ''
 };
 
 const user = (state = defaultState, action) => {

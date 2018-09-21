@@ -4,6 +4,7 @@ import { Grid, Col, Button } from 'react-bootstrap';
 import request from 'superagent';
 import '../styles/date.css';
 import { connect } from 'react-redux';
+import { get, getAvailabilityFilter } from './utils/api';
 // need a calendar as per:
 
 //https://doodle.com/poll/i78zw9vimvgyiw5c#calendar
@@ -30,6 +31,18 @@ class AddAvailability extends Component {
   componentDidMount() {
     // get next 7 dates
     this.getDatesForTheWeek();
+    this.getMyAvailabilityForTheWeek();
+  }
+
+  getMyAvailabilityForTheWeek() {
+    // add db query to get all availabilities within the date range for a specific userid
+    const filter = getAvailabilityFilter('Test');
+    console.log(filter);
+    get('/availabilities', 'QLaWTpZESronSIFc1UblnnDPtwNH3Hma3KP3YCobzLwkfqszK2wRwWRKA2kjq7h2', filter).then((res) => {
+      console.log(res);
+    }).catch((err) => {
+      console.error(err);
+    });
   }
 
   getDatesForTheWeek() {

@@ -78,6 +78,9 @@ class Login extends Component {
       userLoginSuccess: true,
       userLoginFail: false
     });
+
+    // redirect to set greens page ?
+    // better to have a nice view of either clicking view greens or set greens
   }
 
   handleUnsuccessfulRegister(err) {

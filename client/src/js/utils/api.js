@@ -19,8 +19,28 @@ export const post = (url, data) => {
 *
 * returns {promise}
 */
-export const get = (url, token) => {
+export const get = (url, token, filter) => {
   return request
   .get(`http://localhost:3000/api${url}?access_token=${token}`)
+  .query({filter})
   .set('Accept', 'application/json');
+}
+
+/*
+* {string} userId - user id
+* {date} startDate - Round-trip date format
+* {date} endDate - Round-trip date format
+* 
+* returns {Object} - the filter for ajax
+*/
+export const getAvailabilityFilter = (userId, startDate, endDate) => {
+  const filter = {
+    where: {
+      ...(userId && {userId}),
+      ...((startDate && !endDate) && {"availability": {"gt": startDate}}),
+      ...((!startDate && endDate) && {"availability": {"lt": endDate}}),
+      ...((startDate && endDate) && {"availability": {"between": [startDate,endDate]}}),
+    }
+  }
+  return filter
 }
