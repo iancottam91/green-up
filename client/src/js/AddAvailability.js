@@ -13,6 +13,7 @@ import { post, deleteItem } from './utils/api';
 // need to request data to see what availability i've already set
 
 const token = 'QLaWTpZESronSIFc1UblnnDPtwNH3Hma3KP3YCobzLwkfqszK2wRwWRKA2kjq7h2';
+const userId = 'test';
 
 const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
@@ -47,7 +48,7 @@ export class AddAvailability extends Component {
 
     // set actual user id and actaul token //
 
-    const filter = getAvailabilityFilter('test', today, endOfWeek);
+    const filter = getAvailabilityFilter(userId, today, endOfWeek);
     
     // get my availabilities for this week
     get('/availabilities', token, JSON.stringify(filter)).then((res) => {
@@ -90,13 +91,14 @@ export class AddAvailability extends Component {
     this.state.availability.map((date) => {
       return availabilityEntries.push({
         // userId: 'this.props.user.id',
-        userId: 'test',
+        userId,
         availability: date
       })
     });
     return availabilityEntries;
   }
 
+  // update availability in the app after interacting with a checkbox
   updateAvailavilityInState(e) {
     if(this.state.availability.indexOf(e.target.value) < 0) {
       let newAvailibility = this.state.availability;
@@ -129,10 +131,11 @@ export class AddAvailability extends Component {
     return idsToDelete;
   }
 
+  // if a user does change anything, the old db entries are delete and new added to save effort
   submitAvailability(e) {
     e.preventDefault();
 
-    // add new availabilities
+    // add all new availabilities
     post(`/availabilities?access_token=${token}`, this.formatAvailabilityForPost())
       .then((res) => {
         this.handleSuccessfulSet(res);
@@ -140,8 +143,7 @@ export class AddAvailability extends Component {
         this.handleUnsuccessfulSet(err);
       });
     
-    // delete availabilities
-    // just delete all original entries
+    // delete availabilities - just delete all original entries
     const idsToDelete = this.extractAvailabilityIdsForDelete(this.state.initialAvailability , []);
     for(var i=0; i<idsToDelete.length; i++) {
       deleteItem('/availabilities', token, idsToDelete[i])
