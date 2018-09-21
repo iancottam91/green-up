@@ -44,7 +44,7 @@ To do:
 NEXT:
 
 - get availabilities for my current week to set initial state in set my greens
+- persist user details in local storage
 - post for each availability option
 - view all availabilites of everyone else
-- keep token in local storage
 - make into an app??

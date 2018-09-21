@@ -30,15 +30,23 @@ class AddAvailability extends Component {
 
   componentDidMount() {
     // get next 7 dates
-    this.getDatesForTheWeek();
-    this.getMyAvailabilityForTheWeek();
+    const weekDates = this.getDatesForTheWeek();
+    this.setState({
+      weekDates
+    });
+    this.getMyAvailabilityForTheWeek(weekDates);
   }
 
-  getMyAvailabilityForTheWeek() {
-    // add db query to get all availabilities within the date range for a specific userid
-    const filter = getAvailabilityFilter('Test');
-    console.log(filter);
-    get('/availabilities', 'QLaWTpZESronSIFc1UblnnDPtwNH3Hma3KP3YCobzLwkfqszK2wRwWRKA2kjq7h2', filter).then((res) => {
+  getMyAvailabilityForTheWeek(weekDates) {
+    const today = weekDates[0];
+    const endOfWeek = weekDates[weekDates.length -1];
+
+    // set actual user id and actaul token //
+    
+    const filter = getAvailabilityFilter('test', today, endOfWeek);
+    
+    // get my availabilities for this week
+    get('/availabilities', 'QLaWTpZESronSIFc1UblnnDPtwNH3Hma3KP3YCobzLwkfqszK2wRwWRKA2kjq7h2', JSON.stringify(filter)).then((res) => {
       console.log(res);
     }).catch((err) => {
       console.error(err);
@@ -56,9 +64,7 @@ class AddAvailability extends Component {
       endOfDayDate.setDate(endOfDayDate.getDate()+i);
       dates.push(endOfDayDate);
     }
-    this.setState({
-      dates
-    });
+    return dates;
   }
 
   formatAvailability() {
