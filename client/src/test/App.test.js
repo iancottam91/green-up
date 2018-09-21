@@ -2,6 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as apiHelpers from '../js/utils/api';
 import { AddAvailability } from '../js/AddAvailability';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
+
 
 describe('getAvailabilityFilter', () => {
 
@@ -60,5 +65,37 @@ describe('getAvailabilityFilter', () => {
 });
 
 describe('extractAvailabilityIdsForDelete', () => {
-  expect(AddAvailability.extractAvailabilityIdsForDelete()).toEqual('a');
+  it('should return availability to delete if necessary', () => {
+    const wrapper = shallow(<AddAvailability/>);
+    const initial = [
+      {availability: "2018-09-21T22:59:59.000Z", id: "5ba4f66b101d05ddd4df33e3"},
+      {availability: "2018-09-22T22:59:59.000Z", id: "5ba4f671101d05ddd4df33e4"},
+      {availability: "2018-09-23T22:59:59.000Z", id: "5ba4f67a101d05ddd4df33e5"},
+      {availability: "2018-09-24T22:59:59.000Z", id: "5ba4f67a101d05ddd4df33e6"}
+    ];
+
+    const next = ["2018-09-21T22:59:59.000Z", "2018-09-22T22:59:59.000Z", "2018-09-28T22:59:59.000Z"];
+
+    const result = [
+      "5ba4f67a101d05ddd4df33e5",
+      "5ba4f67a101d05ddd4df33e6"
+    ]
+
+    expect(wrapper.instance().extractAvailabilityIdsForDelete(initial, next)).toEqual(result);
+  });
+
+  it('should return an empty array if there are no ids to delete', () => {
+    const wrapper = shallow(<AddAvailability/>);
+    const initial = [
+      {availability: "2018-09-21T22:59:59.000Z", id: "5ba4f66b101d05ddd4df33e3"},
+      {availability: "2018-09-22T22:59:59.000Z", id: "5ba4f671101d05ddd4df33e4"},
+      {availability: "2018-09-28T22:59:59.000Z", id: "5ba4f67a101d05ddd4df33e5"},
+    ];
+
+    const next = ["2018-09-21T22:59:59.000Z", "2018-09-22T22:59:59.000Z", "2018-09-28T22:59:59.000Z"];
+
+    const result = [];
+
+    expect(wrapper.instance().extractAvailabilityIdsForDelete(initial, next)).toEqual(result);
+  });
 });

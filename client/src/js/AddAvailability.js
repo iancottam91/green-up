@@ -65,6 +65,7 @@ export class AddAvailability extends Component {
         initialAvailability,
         hasLoadedAvailabilities: true,
       });
+      console.log(this.state);
     }).catch((err) => {
       console.error(err);
     });
@@ -121,7 +122,11 @@ export class AddAvailability extends Component {
   * 
   */
   extractAvailabilityIdsForDelete(initialAvailability, setAvailability) {
-
+    const idsToDelete = [];
+    initialAvailability.map((inital) => {
+      setAvailability.indexOf(inital.availability) >= 0 ? undefined : idsToDelete.push(inital.id);
+    });
+    return idsToDelete;
   }
 
   submitAvailability(e) {
