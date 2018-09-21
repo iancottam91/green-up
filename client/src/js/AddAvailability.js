@@ -39,7 +39,7 @@ export class AddAvailability extends Component {
     this.setState({
       dates: weekDates
     });
-    this.getMyAvailabilityForTheWeek(weekDates);
+    this.props.user ? this.getMyAvailabilityForTheWeek(weekDates) : undefined;
   }
 
   getMyAvailabilityForTheWeek(weekDates) {

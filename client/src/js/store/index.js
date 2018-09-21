@@ -2,6 +2,7 @@ import ReduxThunk from 'redux-thunk';
 import { routerReducer } from 'react-router-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import user from './reducer/user';
+import dates from './reducer/dates';
 import {
   loadState,
   saveState
@@ -22,6 +23,7 @@ const persistedState = loadState();
 const store = createStore(
   combineReducers({
     user,
+    dates,
     routing: routerReducer,
   }),
   persistedState,

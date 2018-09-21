@@ -20,7 +20,6 @@ export const post = (url, data) => {
 * returns {promise}
 */
 export const get = (url, token, filter) => {
-  console.log(filter);
   return request
   .get(`http://localhost:3000/api${url}?access_token=${token}`)
   .query({filter})

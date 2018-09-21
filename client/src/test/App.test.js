@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as apiHelpers from '../js/utils/api';
 import { AddAvailability } from '../js/AddAvailability';
+import { ViewAvailability } from '../js/ViewAvailability';
 import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -97,5 +98,23 @@ describe('extractAvailabilityIdsForDelete', () => {
     const result = [];
 
     expect(wrapper.instance().extractAvailabilityIdsForDelete(initial, next)).toEqual(result);
+  });
+});
+
+describe('filterAvailabilityByDate', () => {
+  it('should return all availability for a specific date', () => {
+    const noop = () => {};
+    const wrapper = shallow(<ViewAvailability setWeekDates={noop} user={''} />);
+    const unfilteredData = [{
+      userId: "this.props.user.id", availability: "2018-09-21T22:59:59.000Z", id: "5ba506c10d0e34e458a097ec"
+    },
+    {
+      userId: "this.props.user.id", availability: "2018-09-22T22:59:59.000Z", id: "5ba506c10d0e34e458a097ec"
+    }]
+
+    const filteredData = [{
+      userId: "this.props.user.id", availability: "2018-09-21T22:59:59.000Z", id: "5ba506c10d0e34e458a097ec"
+    }]
+    expect(wrapper.instance().filterAvailabilityByDate()).toEqual(filteredData);
   });
 });
