@@ -42,13 +42,8 @@ To do:
 * verify email address
 
 NEXT:
-
-
-
 - view all availabilites of everyone else:
-- set up another endpoint where you expose availability as an object keyed by 'availability' value?
-(not 100% necessary but REALLY GOOD way to learn about DBs and data model structure)
-- might need to add username to availabilities data model
+(might need to add username to availabilities data model)
 
 MECHANICS OF THE APP:
 - get redirected to the login page if you're not logged in
@@ -57,7 +52,9 @@ MECHANICS OF THE APP:
 DEPLOY:
 - deploy to a website for assement with james
 
-- future plans
+FUTURE PLANS:
+- set up another endpoint where you expose availability as an object keyed by 'availability' value?
+(not 100% necessary but REALLY GOOD way to learn about DBs and data model structure)
 - improve profiles - integrate with google plus?
 - make into an app??
 
