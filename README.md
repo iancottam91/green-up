@@ -44,7 +44,6 @@ To do:
 NEXT:
 
 
-- update availability on clicking 'set my greens'
 - persist user details in local storage
 - view all availabilites of everyone else
 - make into an app??
