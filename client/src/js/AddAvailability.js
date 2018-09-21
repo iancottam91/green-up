@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
 import { Grid, Col, Button } from 'react-bootstrap';
-import request from 'superagent';
 import '../styles/date.css';
 import { connect } from 'react-redux';
 import { get, getAvailabilityFilter } from './utils/api';
+import { post } from './utils/api';
 // need a calendar as per:
 
 //https://doodle.com/poll/i78zw9vimvgyiw5c#calendar
@@ -12,27 +12,31 @@ import { get, getAvailabilityFilter } from './utils/api';
 // need to be able to set availability only for the next week
 // need to request data to see what availability i've already set
 
+const token = 'QLaWTpZESronSIFc1UblnnDPtwNH3Hma3KP3YCobzLwkfqszK2wRwWRKA2kjq7h2';
+
 const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
 const days = ["Sun", "Mon","Tue","Wed","Thu","Fri","Sat"];
 
-class AddAvailability extends Component {
+export class AddAvailability extends Component {
 
   constructor(props, context) {
     super(props, context);
     this.state = {
-      availability: ["Fri Sep 07 2018 23:59:59 GMT+0100 (British Summer Time)"],
+      hasLoadedAvailabilities: false,
+      initialAvailability: [], // to keep track of availabilities for deletion
+      availability: [], // to keep track of new availabilities 
       dates: []
     }
 
-    this.updateAvailavility = this.updateAvailavility.bind(this);
+    this.updateAvailavilityInState = this.updateAvailavilityInState.bind(this);
   }
 
   componentDidMount() {
     // get next 7 dates
     const weekDates = this.getDatesForTheWeek();
     this.setState({
-      weekDates
+      dates: weekDates
     });
     this.getMyAvailabilityForTheWeek(weekDates);
   }
@@ -42,12 +46,25 @@ class AddAvailability extends Component {
     const endOfWeek = weekDates[weekDates.length -1];
 
     // set actual user id and actaul token //
-    
+
     const filter = getAvailabilityFilter('test', today, endOfWeek);
     
     // get my availabilities for this week
-    get('/availabilities', 'QLaWTpZESronSIFc1UblnnDPtwNH3Hma3KP3YCobzLwkfqszK2wRwWRKA2kjq7h2', JSON.stringify(filter)).then((res) => {
-      console.log(res);
+    get('/availabilities', token, JSON.stringify(filter)).then((res) => {
+      const availableDates = res.body.map((data) => {
+        return data.availability;
+      });
+      const initialAvailability = res.body.map((data) => {
+        return {
+          availability: data.availability,
+          id: data.id
+        };
+      });
+      this.setState({
+        availability: availableDates,
+        initialAvailability,
+        hasLoadedAvailabilities: true,
+      });
     }).catch((err) => {
       console.error(err);
     });
@@ -62,19 +79,24 @@ class AddAvailability extends Component {
             ,nextDay.getDate()
             ,23,59,59);
       endOfDayDate.setDate(endOfDayDate.getDate()+i);
-      dates.push(endOfDayDate);
+      dates.push(endOfDayDate.toISOString());
     }
     return dates;
   }
 
-  formatAvailability() {
-    return {
-      "userId": "acwaefag1231w",
-      "availability": "2019-09-07T11:23:54.093Z"
-    }
+  formatAvailabilityForPost() {
+    const availabilityEntries = [];
+    this.state.availability.map((date) => {
+      return availabilityEntries.push({
+        // userId: 'this.props.user.id',
+        userId: 'test',
+        availability: date
+      })
+    });
+    return availabilityEntries;
   }
 
-  updateAvailavility(e) {
+  updateAvailavilityInState(e) {
     if(this.state.availability.indexOf(e.target.value) < 0) {
       let newAvailibility = this.state.availability;
       newAvailibility.push(e.target.value);
@@ -88,23 +110,36 @@ class AddAvailability extends Component {
         availability: newAvailibility
       })
     }
-    console.log(this.state.availability);
+  }
+
+  /*
+  * initialAvailability - [{
+      availability {ISO date string}
+      id: {string}
+    }] - availability in the DB
+  * {[string]} setAvailability - new availability from the UI
+  * 
+  */
+  extractAvailabilityIdsForDelete(initialAvailability, setAvailability) {
+
   }
 
   submitAvailability(e) {
     e.preventDefault();
-    console.log('set my greens');
 
-    // need to post for each availibilty 
-    request
-      .post(`http://localhost:3000/api/availabilities?access_token=${this.props.user.token}`)
-      .send(this.formatAvailability())
-      .set('Accept', 'application/json')
+    console.log(this.formatAvailabilityForPost());
+    // delete availabilities 
+    // const idsToDelete = extractAvailabilityIdsForDelete(initialAvailability, setAvailability);
+
+    // add availabilities
+    post(`/availabilities?access_token=${token}`, this.formatAvailabilityForPost())
       .then((res) => {
         this.handleSuccessfulSet(res);
       }).catch((err) => {
         this.handleUnsuccessfulSet(err);
       });
+
+
   }
 
   handleSuccessfulSet(res) {
@@ -112,7 +147,7 @@ class AddAvailability extends Component {
   }
 
   handleUnsuccessfulSet(error) {
-    console.log(error);
+    console.error(error);
   }
 
   render () {
@@ -122,18 +157,20 @@ class AddAvailability extends Component {
           <div className="date-container">
             <div className="date-items">
               {this.state.dates.map((i) => {
+                const date = new Date(i);
                 return(
-                  <div className="date-item" key={i}>
-                    <div className="date-header">
-                      <div className="date-header__date">{i.getDate()} {months[i.getMonth()]}</div>
-                      <div className="date-header__day">{days[i.getDay()]}</div>
-                    </div>
-                    <div className="date-availability">
-                      <label title="update-availability">
-                        <input defaultChecked={this.state.availability.indexOf(i.toString()) !== -1}  name={i} value={i} onClick={this.updateAvailavility} type="checkbox" />
-                      </label>
-                    </div>
-                  </div>
+                  this.state.hasLoadedAvailabilities ?
+                    <div className="date-item" key={date}>
+                      <div className="date-header">
+                        <div className="date-header__date">{date.getDate()} {months[date.getMonth()]}</div>
+                        <div className="date-header__day">{days[date.getDay()]}</div>
+                      </div>
+                      <div className="date-availability">
+                        <label title="update-availability">
+                          <input defaultChecked={this.state.availability.indexOf(i) !== -1}  name={i} value={i} onClick={this.updateAvailavilityInState} type="checkbox" />
+                        </label>
+                      </div>
+                    </div> : undefined
                 );
               })}
             </div>

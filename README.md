@@ -43,8 +43,8 @@ To do:
 
 NEXT:
 
-- get availabilities for my current week to set initial state in set my greens
+
+- update availability on clicking 'set my greens'
 - persist user details in local storage
-- post for each availability option
 - view all availabilites of everyone else
 - make into an app??
