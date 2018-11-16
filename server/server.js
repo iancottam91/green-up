@@ -53,9 +53,9 @@ app.middleware('auth', loopback.token({
   model: app.models.accessToken,
 }));
 
-app.middleware('session:before', cookieParser(app.get('cookieSecret')));
+app.middleware('session:before', cookieParser('secret'));
 app.middleware('session', session({
-  secret: 'kitty',
+  secret: 'secret',
   saveUninitialized: true,
   resave: true,
 }));
@@ -77,14 +77,27 @@ for(var s in config) {
   c.session = c.session !== false;
   passportConfigurator.configureProvider(s, c);
 }
+var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+
 
 app.get('/', function(req, res, next) {
-  res.sendFile(path.resolve(__dirname, '..', 'client/public', 'index.html'));
+  if(req && req.user) {
+    console.log(req.user);
+    console.log(req.user.profiles);
+  }
+  res.sendFile(path.resolve(__dirname, '..', 'client/build', 'index.html'));
   // res.render('pages/index', {user:
   //   req.user,
   //   url: req.url,
   // });
 });
+
+app.get('/auth/account', ensureLoggedIn('/login'), function(req, res, next) {
+  console.log(req.user);
+  console.log(req.user.profiles);
+  res.sendFile(path.resolve(__dirname, '..', 'client/build', 'index.html'));
+});
+
 
 app.start = function() {
   // start the web server

@@ -18,9 +18,9 @@ class Header extends Component {
                   <Link to="/login">
                     <Button bsStyle="success">Login</Button>
                   </Link>
-                  <Link to="/auth/facebook">
+                  <a href="/auth/facebook">
                     <Button bsStyle="success">Login with Facebook</Button>
-                  </Link>
+                  </a>
                 </span>  : <span>{this.props.user.realm}</span>
               }
             </div>
