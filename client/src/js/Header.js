@@ -14,9 +14,14 @@ class Header extends Component {
               <span className="logo">Green Up</span>
               {
                 this.props.user.username === '' ? 
-                <Link to="/login">
-                  <Button bsStyle="success">Login</Button>
-                </Link> : <span>{this.props.user.realm}</span>
+                <span>
+                  <Link to="/login">
+                    <Button bsStyle="success">Login</Button>
+                  </Link>
+                  <Link to="/auth/facebook">
+                    <Button bsStyle="success">Login with Facebook</Button>
+                  </Link>
+                </span>  : <span>{this.props.user.realm}</span>
               }
             </div>
           </Col>

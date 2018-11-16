@@ -51,7 +51,7 @@ class Login extends Component {
       this.props.addUserDetails(res.body);
     }).catch((err) => {
       console.error(err);
-      console.error('there was an error');
+      console.error('there was an error getting user info');
     })
   }
 

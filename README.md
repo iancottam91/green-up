@@ -44,6 +44,7 @@ To do:
 NEXT:
 - view all availabilites of everyone else:
 (might need to add username to availabilities data model)
+- login via fb or google
 
 MECHANICS OF THE APP:
 - get redirected to the login page if you're not logged in
@@ -55,7 +56,9 @@ DEPLOY:
 FUTURE PLANS:
 - set up another endpoint where you expose availability as an object keyed by 'availability' value?
 (not 100% necessary but REALLY GOOD way to learn about DBs and data model structure)
-- improve profiles - integrate with google plus?
-- make into an app??
+- make into an app
 
 
+
+
+{username: "icottam91", password: "password", email: "icottam@msn.com"}

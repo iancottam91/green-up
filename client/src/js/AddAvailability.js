@@ -12,7 +12,7 @@ import { post, deleteItem } from './utils/api';
 // need to be able to set availability only for the next week
 // need to request data to see what availability i've already set
 
-const token = 'QLaWTpZESronSIFc1UblnnDPtwNH3Hma3KP3YCobzLwkfqszK2wRwWRKA2kjq7h2';
+const token = 'sgoTJIyQUNWaR7O4j84ejnjNrCKBya44g6npUMCh4M8v20DjsHW2X5GKA10ywha9';
 const userId = 'test';
 
 const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
