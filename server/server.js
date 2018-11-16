@@ -81,15 +81,14 @@ var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 
 app.get('/', function(req, res, next) {
-  if(req && req.user) {
-    console.log(req.user);
-    console.log(req.user.profiles);
+  // set a cookie for user - need to consider clearing this too
+  if(req && req.user && req.user.profiles && !req.cookies.user) {
+    // set req.user as a cookie
+    res.cookie('user', JSON.stringify(req.user.profiles), {
+      maxAge: 1000 * 60 * 60,
+    });
   }
   res.sendFile(path.resolve(__dirname, '..', 'client/build', 'index.html'));
-  // res.render('pages/index', {user:
-  //   req.user,
-  //   url: req.url,
-  // });
 });
 
 app.get('/auth/account', ensureLoggedIn('/login'), function(req, res, next) {

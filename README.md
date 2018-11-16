@@ -37,18 +37,19 @@ Need:
 * Select availabilities page
 * View availabilities page
 
-To do:
-
-* verify email address
-
 NEXT:
+- login via fb or google:
+(good oauth example https://github.com/strongloop/loopback-example-passport)
+* add user details after login from fb to store
+* add twitter login fnality
+* remove normal login and replace with https://doodle.com style login page? https://doodle.com/login?redirectUrl=%2Fdashboard
+* add logout (and remove cookie)
+* ejs instead of cookie?
 - view all availabilites of everyone else:
 (might need to add username to availabilities data model)
-- login via fb or google
 
 MECHANICS OF THE APP:
 - get redirected to the login page if you're not logged in
-- link to register page on login page /combine them like FB
 
 DEPLOY:
 - deploy to a website for assement with james
@@ -56,6 +57,7 @@ DEPLOY:
 FUTURE PLANS:
 - set up another endpoint where you expose availability as an object keyed by 'availability' value?
 (not 100% necessary but REALLY GOOD way to learn about DBs and data model structure)
+- design - copy doodle basically
 - make into an app
 
 
