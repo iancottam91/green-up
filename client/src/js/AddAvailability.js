@@ -12,8 +12,8 @@ import { post, deleteItem } from './utils/api';
 // need to be able to set availability only for the next week
 // need to request data to see what availability i've already set
 
-const token = 'sgoTJIyQUNWaR7O4j84ejnjNrCKBya44g6npUMCh4M8v20DjsHW2X5GKA10ywha9';
 const userId = 'test';
+// const token = '';
 
 const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
@@ -47,6 +47,7 @@ export class AddAvailability extends Component {
     const endOfWeek = weekDates[weekDates.length -1];
 
     // set actual user id and actaul token //
+    const { user: { token } } = this.props;
 
     const filter = getAvailabilityFilter(userId, today, endOfWeek);
     
@@ -90,8 +91,7 @@ export class AddAvailability extends Component {
     const availabilityEntries = [];
     this.state.availability.map((date) => {
       return availabilityEntries.push({
-        // userId: 'this.props.user.id',
-        userId,
+        userId: this.props.user.id,
         availability: date
       })
     });
@@ -133,7 +133,9 @@ export class AddAvailability extends Component {
 
   // if a user does change anything, the old db entries are delete and new added to save effort
   submitAvailability(e) {
-    e.preventDefault();
+    e.preventDefault(); 
+    const { user: token } = this.props;
+    console.log(token);
 
     // add all new availabilities
     post(`/availabilities?access_token=${token}`, this.formatAvailabilityForPost())

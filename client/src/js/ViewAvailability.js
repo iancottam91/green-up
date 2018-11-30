@@ -10,17 +10,13 @@ const days = ["Sun", "Mon","Tue","Wed","Thu","Fri","Sat"];
 
 export class ViewAvailability extends Component {
 
-  constructor (props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.setWeekDates();
 
     this.props.user.token ? get('/availabilities', this.props.user.token).then((res) => {
         console.log('availabilities: ');
         console.log(res.body);
-      }): undefined;
+      }): null;
   }
 
   filterAvailabilityByDate () {

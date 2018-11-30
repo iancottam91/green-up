@@ -81,6 +81,7 @@ var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 
 app.get('/', function(req, res, next) {
+  console.log(req.user);
   // set a cookie for user - need to consider clearing this too
   if(req && req.user && req.user.profiles && !req.cookies.user) {
     // set req.user as a cookie
@@ -91,12 +92,25 @@ app.get('/', function(req, res, next) {
   res.sendFile(path.resolve(__dirname, '..', 'client/build', 'index.html'));
 });
 
-app.get('/auth/account', ensureLoggedIn('/login'), function(req, res, next) {
-  console.log(req.user);
-  console.log(req.user.profiles);
-  res.sendFile(path.resolve(__dirname, '..', 'client/build', 'index.html'));
+// set cookie with user details for use on the front end
+app.get('/auth/account*', ensureLoggedIn('/login'), function(req, res, next) {
+  // req.user
+  if(req && req.user && req.user.profiles && !req.cookies.user) {
+    // set req.user as a cookie
+    res.cookie('user', JSON.stringify(req.user.profiles), {
+      maxAge: 1000 * 60 * 60,
+    });
+  }
+  res.redirect('/');
 });
 
+// logout
+app.get('/auth/logout', function(req, res, next) {
+  // clear cookie
+  res.clearCookie('user');
+  req.logout();
+  res.redirect('/');
+});
 
 app.start = function() {
   // start the web server

@@ -71,7 +71,7 @@ class Login extends Component {
     this.props.addUserToken(res.body.id);
 
     // get user details and add to the store
-    this.getAndStoreUserDetails('5b8006fc6262ab7f0d8e3b51')
+    // this.getAndStoreUserDetails('5b8006fc6262ab7f0d8e3b51')
 
     // update state based on login attempt
     this.setState({
