@@ -41,12 +41,12 @@ NEXT:
 - login via fb or google:
 (good oauth example https://github.com/strongloop/loopback-example-passport)
 * add user details after login from fb to store
-* add twitter login fnality
 * remove normal login and replace with https://doodle.com style login page? https://doodle.com/login?redirectUrl=%2Fdashboard
 * add logout (and remove cookie)
-* ejs instead of cookie?
+* make sure cookies expire at the same time as user login token
 - view all availabilites of everyone else:
 (might need to add username to availabilities data model)
+* or set cookies from normal login
 
 MECHANICS OF THE APP:
 - get redirected to the login page if you're not logged in
