@@ -2,6 +2,7 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var path = require('path');
+var fs = require('fs');
 
 var app = module.exports = loopback();
 
@@ -95,9 +96,12 @@ app.get('/', function(req, res, next) {
 // set cookie with user details for use on the front end
 app.get('/auth/account*', ensureLoggedIn('/login'), function(req, res, next) {
   // req.user
-  if(req && req.user && req.user.profiles && !req.cookies.user) {
+  if(req && req.user && req.user.profiles) {
     // set req.user as a cookie
     res.cookie('user', JSON.stringify(req.user.profiles), {
+      maxAge: 1000 * 60 * 60,
+    });
+    res.cookie('userAccess', JSON.stringify(req.accessToken), {
       maxAge: 1000 * 60 * 60,
     });
   }
@@ -108,6 +112,7 @@ app.get('/auth/account*', ensureLoggedIn('/login'), function(req, res, next) {
 app.get('/auth/logout', function(req, res, next) {
   // clear cookie
   res.clearCookie('user');
+  res.clearCookie('userAccess');
   req.logout();
   res.redirect('/');
 });

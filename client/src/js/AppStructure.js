@@ -15,12 +15,14 @@ class AppStructure extends Component {
 
     if(parsedCookies && parsedCookies.user) {
       let userDetails = JSON.parse(parsedCookies.user);
+      let userAccess = JSON.parse(parsedCookies.userAccess);
       console.log(`O auth cookie set!`);
       console.log(userDetails);
+      console.log(userAccess);
       if(!props.appState.user.token ||
-        (props.appState.user.token && props.appState.user.token !== userDetails[0].credentials.accessToken)
+        (props.appState.user.token && props.appState.user.token !== userAccess.id)
       ) {
-        this.props.addUserToken(userDetails[0].credentials.accessToken);
+        this.props.addUserToken(userAccess.id);
       }
     }
   }

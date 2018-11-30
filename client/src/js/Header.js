@@ -15,9 +15,9 @@ class Header extends Component {
               {
                 this.props.user.username === '' ? 
                 <span>
-                  <Link to="/login">
+                  {/* <Link to="/login">
                     <Button bsStyle="success">Login</Button>
-                  </Link>
+                  </Link> */}
                   <a href="/auth/facebook">
                     <Button bsStyle="success">Login with Facebook</Button>
                   </a>

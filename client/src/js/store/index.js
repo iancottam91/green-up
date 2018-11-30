@@ -26,14 +26,14 @@ const store = createStore(
     dates,
     routing: routerReducer,
   }),
-  persistedState,
+  // persistedState,
   applyMiddleware(...middlewares)
 );
 
-store.subscribe(() => {
-  saveState({
-    user: store.getState().user
-  });
-});
+// store.subscribe(() => {
+//   saveState({
+//     user: store.getState().user
+//   });
+// });
 
 export default store;
