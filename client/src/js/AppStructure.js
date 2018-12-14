@@ -24,12 +24,16 @@ class AppStructure extends Component {
       ) {
         this.props.addUserToken(userAccess.id);
       }
+      this.props.addUserDetails({
+        username: userDetails[0].profile.name.givenName + ' ' + userDetails[0].profile.name.familyName,
+        id: userDetails[0].userId
+      })
     }
   }
 
   render() {
     return (
-      <div>
+      <div className="app-container">
         <Header />
         {this.props.children}
       </div>

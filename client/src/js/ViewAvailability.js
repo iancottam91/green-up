@@ -25,8 +25,7 @@ export class ViewAvailability extends Component {
 
   render () {
     return (
-      <Grid>
-        <Col xs={8} xsOffset={2}>
+      <div>
           <div className="date-container">
             <div className="date-items">
               {this.props.dates && this.props.dates.currentWeek ? this.props.dates.currentWeek.map((i) => {
@@ -43,8 +42,7 @@ export class ViewAvailability extends Component {
               }) : undefined}
             </div>
           </div>
-        </Col>
-      </Grid>
+        </div>
     )
   }
   

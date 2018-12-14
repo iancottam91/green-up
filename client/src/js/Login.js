@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-import { Grid, Col } from 'react-bootstrap';
 import { FormGroup, ControlLabel, FormControl, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { addUserToken, addUserDetails } from './store/action/user';
 import { post, get } from './utils/api';
+
+
+function setCookie(name,value,days) {
+  var expires = "";
+  if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days*24*60*60*1000));
+      expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
 
 class Login extends Component {
 
@@ -47,8 +57,23 @@ class Login extends Component {
   */
   getAndStoreUserDetails(userId) {
     get('/Users/' + userId, this.props.user.token).then((res) => {
-      console.log('put details in store');
       this.props.addUserDetails(res.body);
+      // do in othe fn
+      const userCookie = [{
+        profile: {
+          name: {
+            givenName: 'username',
+            familyName: '',
+          }
+        }
+      }];
+
+      setCookie('user', JSON.stringify(userCookie));
+
+      // res.cookie('user', JSON.stringify(userCookie), {
+      //   maxAge: 1000 * 60 * 60,
+      // });
+
     }).catch((err) => {
       console.error(err);
       console.error('there was an error getting user info');
@@ -58,20 +83,34 @@ class Login extends Component {
   loginUser(userCredentials) {
     post('/Users/login', userCredentials)
       .then((res) => {
-        this.handleSuccessfulRegister(res);
+        console.log(res);
+        this.handleSuccessfulLogin(res);
       }).catch((err) => {
         console.error(err);
-        this.handleUnsuccessfulRegister(err);
+        this.handleUnsuccessfulLogin(err);
       });
   }
 
-  handleSuccessfulRegister(res) {
+  handleSuccessfulLogin(res) {
+
+    // set these values in a cookie - the same one as for fb login
 
     // set user name
     this.props.addUserToken(res.body.id);
 
     // get user details and add to the store
-    // this.getAndStoreUserDetails('5b8006fc6262ab7f0d8e3b51')
+    this.getAndStoreUserDetails(res.body.userId)
+
+    // [0].profile.name.givenName
+    const userAccessCookie = {
+      id: res.body.id
+    }
+
+    setCookie('userAccess', JSON.stringify(userAccessCookie));
+    
+    // res.cookie('userAccess', JSON.stringify(userAccessCookie), {
+    //   maxAge: 1000 * 60 * 60,
+    // });
 
     // update state based on login attempt
     this.setState({
@@ -83,7 +122,7 @@ class Login extends Component {
     // better to have a nice view of either clicking view greens or set greens
   }
 
-  handleUnsuccessfulRegister(err) {
+  handleUnsuccessfulLogin(err) {
     console.error(err.response.body.error.message);
     this.setState({
       userLoginSuccess: false,
@@ -93,45 +132,50 @@ class Login extends Component {
 
   render() {
     return (
-      <Grid>
-        <Col xs={6} xsOffset={3}>
-          {this.state.userLoginSuccess ? 
-            <Alert bsStyle="success">User logged in successfully, click here to&nbsp;
-              <Link to="/set-my-greens">set my greens</Link>
-            </Alert>
-          : ''}
-          {this.state.userLoginFail ? <Alert bsStyle="danger">Unable login user</Alert> : ''}
-          <form onSubmit={this.handleSubmit.bind(this)}>
-            <FormGroup
-              controlId="email"
-              >
-              <ControlLabel>Email</ControlLabel>
-              <FormControl
-                name="email"
-                type="email"
-                value={this.state.email}
-                placeholder="Email"
-                onChange={this.handleChange}
-                />
-              <FormControl.Feedback />
-            </FormGroup>
-            <FormGroup
-              controlId="password"
-              >
-              <ControlLabel>Password</ControlLabel>
-              <FormControl
-                name="password"
-                type="password"
-                value={this.state.password}
-                placeholder="Password"
-                onChange={this.handleChange}
-                />
-              <FormControl.Feedback />
-            </FormGroup>
-          <Button type="submit" bsStyle="success">Login</Button>
-        </form>
-        </Col>
-      </Grid>
+        <div className="container-50pc">
+          <div className="oauth-login">
+            <a href="/auth/facebook">
+              <button className="btn login-fb">Login with Facebook</button>
+            </a>
+          </div>
+          <div>
+            {this.state.userLoginSuccess ? 
+              <Alert bsStyle="success">User logged in successfully, click here to&nbsp;
+                <Link to="/set-my-greens">set my greens</Link>
+              </Alert>
+            : ''}
+            {this.state.userLoginFail ? <Alert bsStyle="danger">Unable login user</Alert> : ''}
+            <form onSubmit={this.handleSubmit.bind(this)}>
+              <FormGroup
+                controlId="email"
+                >
+                <ControlLabel>Email</ControlLabel>
+                <FormControl
+                  name="email"
+                  type="email"
+                  value={this.state.email}
+                  placeholder="Email"
+                  onChange={this.handleChange}
+                  />
+                <FormControl.Feedback />
+              </FormGroup>
+              <FormGroup
+                controlId="password"
+                >
+                <ControlLabel>Password</ControlLabel>
+                <FormControl
+                  name="password"
+                  type="password"
+                  value={this.state.password}
+                  placeholder="Password"
+                  onChange={this.handleChange}
+                  />
+                <FormControl.Feedback />
+              </FormGroup>
+              <Button type="submit" bsStyle="success">Login</Button>
+            </form>
+          </div>
+        </div>
     );
   }
 }

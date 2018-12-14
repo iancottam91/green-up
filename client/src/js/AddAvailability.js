@@ -12,7 +12,7 @@ import { post, deleteItem } from './utils/api';
 // need to be able to set availability only for the next week
 // need to request data to see what availability i've already set
 
-const userId = 'test';
+// const userId = 'test';
 // const token = '';
 
 const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -47,7 +47,7 @@ export class AddAvailability extends Component {
     const endOfWeek = weekDates[weekDates.length -1];
 
     // set actual user id and actaul token //
-    const { user: { token } } = this.props;
+    const { user: { token, userId } } = this.props;
 
     const filter = getAvailabilityFilter(userId, today, endOfWeek);
     
@@ -138,7 +138,7 @@ export class AddAvailability extends Component {
     console.log(token);
 
     // add all new availabilities
-    post(`/availabilities?access_token=${token}`, this.formatAvailabilityForPost())
+    post(`/availabilities?access_token=${token.token}`, this.formatAvailabilityForPost())
       .then((res) => {
         this.handleSuccessfulSet(res);
       }).catch((err) => {
@@ -147,8 +147,9 @@ export class AddAvailability extends Component {
     
     // delete availabilities - just delete all original entries
     const idsToDelete = this.extractAvailabilityIdsForDelete(this.state.initialAvailability , []);
+    console.log(idsToDelete);
     for(var i=0; i<idsToDelete.length; i++) {
-      deleteItem('/availabilities', token, idsToDelete[i])
+      deleteItem('/availabilities', token.token, idsToDelete[i])
       .then((res) => {
         // console.log(res);
       }).catch((err) => {
@@ -168,8 +169,7 @@ export class AddAvailability extends Component {
 
   render () {
     return (
-      <Grid>
-        <Col xs={8} xsOffset={2}>
+      <div>
           <div className="date-container">
             <div className="date-items">
               {this.state.dates.map((i) => {
@@ -194,8 +194,7 @@ export class AddAvailability extends Component {
           <div className="btn-container">
             <Button onClick={this.submitAvailability.bind(this)} bsStyle="success">Set My Greens!</Button>
           </div>
-        </Col>
-      </Grid>
+        </div>
     )
   }
   

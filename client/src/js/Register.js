@@ -67,8 +67,7 @@ class Register extends Component {
 
   render() {
     return (
-      <Grid>
-        <Col xs={6} xsOffset={3}>
+      <div>
           {this.state.userAddedSuccess ? <Alert bsStyle="success">User added successfully</Alert> : ''}
           {this.state.userAddedFail ? <Alert bsStyle="danger">Unable to add user</Alert> : ''}
           <form onSubmit={this.handleSubmit.bind(this)}>
@@ -113,8 +112,7 @@ class Register extends Component {
           </FormGroup>
           <Button type="submit" bsStyle="success">Submit</Button>
         </form>
-        </Col>
-      </Grid>
+        </div>
     );
   }
 }

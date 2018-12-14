@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Button } from 'react-bootstrap';
-import { Grid, Col } from 'react-bootstrap';
 
 class Header extends Component {
   render() {
     return (
       <header>
-        <Grid>
-          <Col xs={6} xsOffset={3}>
+        <div>
             <div className="header-container">
               <span className="logo">Green Up</span>
               {
@@ -18,17 +16,19 @@ class Header extends Component {
                   {/* <Link to="/login">
                     <Button bsStyle="success">Login</Button>
                   </Link> */}
-                  <a href="/auth/facebook">
+                  {/* <a href="/auth/facebook">
                     <Button bsStyle="success">Login with Facebook</Button>
-                  </a>
-                  <a href="/auth/logout">
-                    <Button bsStyle="success">Logout</Button>
-                  </a>
-                </span>  : <span>{this.props.user.realm}</span>
+                  </a> */}
+                </span>  :
+                  <span>
+                    <span>{this.props.user.username}</span>
+                    <a href="/auth/logout">
+                      <Button bsStyle="success">Logout</Button>
+                    </a>
+                  </span>
               }
             </div>
-          </Col>
-        </Grid>
+          </div>
       </header>
     );
   }
