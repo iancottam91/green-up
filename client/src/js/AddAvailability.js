@@ -50,6 +50,8 @@ export class AddAvailability extends Component {
     const { user: { token, userId } } = this.props;
 
     const filter = getAvailabilityFilter(userId, today, endOfWeek);
+
+    console.log(filter);
     
     // get my availabilities for this week
     get('/availabilities', token, JSON.stringify(filter)).then((res) => {

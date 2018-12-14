@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { get } from './utils/api';
+import { get, getAvailabilityFilter } from './utils/api';
 import { setWeekDates } from './store/action/dates';
 
 const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -12,11 +12,17 @@ export class ViewAvailability extends Component {
 
   componentDidMount() {
     this.props.setWeekDates();
+  }
 
-    this.props.user.token ? get('/availabilities', this.props.user.token).then((res) => {
-        console.log('availabilities: ');
-        console.log(res.body);
-      }): null;
+  componentDidUpdate() {
+    // only if dates changed!
+    
+      const filter = getAvailabilityFilter(undefined, this.props.dates.currentWeek[0], this.props.dates.currentWeek[6]);
+      console.log(filter);
+      this.props.user.token ? get('/availabilities', this.props.user.token, filter).then((res) => {
+          console.log('availabilities: ');
+          console.log(res.body);
+        }): null;
   }
 
   filterAvailabilityByDate () {

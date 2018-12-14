@@ -38,11 +38,10 @@ Need:
 * View availabilities page
 
 NEXT:
-- login via fb or google:
-(good oauth example https://github.com/strongloop/loopback-example-passport)
 * make sure cookies expire at the same time as user login token
 - view all availabilites of everyone else:
 (might need to add username to availabilities data model)
+* use filter to get availability for the week only (viewAvailability line 18)
 * or set cookies from normal login
 
 MECHANICS OF THE APP:
