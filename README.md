@@ -40,7 +40,6 @@ Need:
 NEXT:
 - login via fb or google:
 (good oauth example https://github.com/strongloop/loopback-example-passport)
-* remove normal login and replace with https://doodle.com style login page? https://doodle.com/login?redirectUrl=%2Fdashboard
 * make sure cookies expire at the same time as user login token
 - view all availabilites of everyone else:
 (might need to add username to availabilities data model)

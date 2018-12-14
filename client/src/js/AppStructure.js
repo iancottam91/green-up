@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Header from './Header';
 import { connect } from 'react-redux';
 import { addUserToken, addUserDetails } from './store/action/user';
+import { Redirect } from 'react-router'
 const cookie = require('cookie');
 
 class AppStructure extends Component {
@@ -28,10 +29,15 @@ class AppStructure extends Component {
         username: userDetails[0].profile.name.givenName + ' ' + userDetails[0].profile.name.familyName,
         id: userDetails[0].userId
       })
+    } else {
+      // dodgy routing - change to version 4
+      if(window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
     }
   }
 
-  render() {
+  render() {    
     return (
       <div className="app-container">
         <Header />
