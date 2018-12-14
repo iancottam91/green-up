@@ -7,28 +7,26 @@ class Header extends Component {
   render() {
     return (
       <header>
-        <div>
-            <div className="header-container">
-              <span className="logo">Green Up</span>
-              {
-                this.props.user.username === '' ? 
-                <span>
-                  {/* <Link to="/login">
-                    <Button bsStyle="success">Login</Button>
-                  </Link> */}
-                  {/* <a href="/auth/facebook">
-                    <Button bsStyle="success">Login with Facebook</Button>
-                  </a> */}
-                </span>  :
-                  <span>
-                    <span>{this.props.user.username}</span>
-                    <a href="/auth/logout">
-                      <Button bsStyle="success">Logout</Button>
-                    </a>
-                  </span>
-              }
-            </div>
-          </div>
+        <div className="header-container">
+          <span className="logo">Green Up</span>
+          {
+            this.props.user.username === '' ? 
+            <span>
+              {/* <Link to="/login">
+                <Button bsStyle="success">Login</Button>
+              </Link> */}
+              {/* <a href="/auth/facebook">
+                <Button bsStyle="success">Login with Facebook</Button>
+              </a> */}
+            </span>  :
+              <span className="login-details-container">
+                <span id="username">{this.props.user.username}</span>
+                <a href="/auth/logout">
+                  <button className="btn">Logout</button>
+                </a>
+              </span>
+          }
+        </div>
       </header>
     );
   }

@@ -170,6 +170,7 @@ export class AddAvailability extends Component {
   render () {
     return (
       <div>
+        <h1 className="green-title">Set My Greens!</h1>
           <div className="date-container">
             <div className="date-items">
               {this.state.dates.map((i) => {
@@ -178,8 +179,8 @@ export class AddAvailability extends Component {
                   this.state.hasLoadedAvailabilities ?
                     <div className="date-item" key={date}>
                       <div className="date-header">
-                        <div className="date-header__date">{date.getDate()} {months[date.getMonth()]}</div>
-                        <div className="date-header__day">{days[date.getDay()]}</div>
+                        <div className="date-header__date">{days[date.getDay()]} {date.getDate()}<sup>th</sup></div>
+                        <div className="date-header__day">{months[date.getMonth()]}</div>
                       </div>
                       <div className="date-availability">
                         <label title="update-availability">
@@ -192,7 +193,7 @@ export class AddAvailability extends Component {
             </div>
           </div>
           <div className="btn-container">
-            <Button onClick={this.submitAvailability.bind(this)} bsStyle="success">Set My Greens!</Button>
+            <button onClick={this.submitAvailability.bind(this)} className="btn submit-btn">Set My Greens!</button>
           </div>
         </div>
     )

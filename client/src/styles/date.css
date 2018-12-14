@@ -1,8 +1,8 @@
 .date-container {
   background: white;
-  padding: 20px;
   border-radius: 5px;
   border: 1px solid #eee;
+  margin-bottom: 10px;
 }
 
 .date-items {
@@ -16,19 +16,28 @@
 .date-header {
   padding: 10px;
   text-align: center;
+  border-bottom: 1px solid #eee;
+  border-left: 1px solid #eee;
+}
+
+.date-item:first-child .date-header, .date-item:first-child .date-availability {
+  border-left: 0;
 }
 
 .date-header__date {
-  font-weight: bold;
   text-align: center;
+  font-size: 16px;
 }
 .date-header__day {
   display: block;
-  text-transform: uppercase;
   font-size: 16px;
   line-height: inherit;
 }
 
 .date-availability {
   text-align: center;
+  padding: 10px;
+}
+sup {
+  top: -.25em;
 }
